@@ -3,7 +3,9 @@ import RangeSlider from "svelte-range-slider-pips";
 
     let values = [40];
     let currentInterval;
+    let savedInterval;
     let endTime;
+
 
     function startTimer() {
       endTime = new Date(Date.now() + values[0] * 1000);
@@ -18,6 +20,8 @@ import RangeSlider from "svelte-range-slider-pips";
     }
   
     function stopTimer() {
+      savedInterval = currentInterval;
+      console.log(savedInterval)
       clearInterval(currentInterval);
     }
   
@@ -25,13 +29,49 @@ import RangeSlider from "svelte-range-slider-pips";
       stopTimer();
       startTimer();
     }
+    // categories
+    let currentCategory = 'none';
+
+    let categoryList = ['none', 'cat 1', 'cat 2', 'cat3']
+    let objectList = [
+      {
+        name: 'none',
+        color: 'gray'
+      },
+      {
+        name: 'cat1',
+        color: 'blue'
+      },
+      {
+        name: 'cat2',
+        color: 'orange'
+      },
+      {
+        name: 'cat3',
+        color: 'yellow'
+      }
+    ]
+
+
   </script>
   
+  <style>
+    .current-category{
+      text-decoration: underline;
+    }
+  </style>
 
-  
+
+      {#each objectList as category}
+        <button class="{currentCategory === category.name ? 'current-category' : ''}"
+                style="color: {currentCategory === category.name ? category.color: ''}"
+                on:click="{() => currentCategory = category.name}">{category.name}
+        </button>
+      {/each}
 
     <p>Time remaining: {values[0]} seconds</p>
-    <button on:click={stopTimer}>Stop</button>
+    <button on:click={stopTimer}>Pause</button>
+    <button on:click={startTimer}>Resume</button>
 
 
   <RangeSlider bind:values min={0} max={60} float on:change={resetTimer}/>

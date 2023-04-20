@@ -5,25 +5,29 @@ import RangeSlider from "svelte-range-slider-pips";
     // categories
     let currentCategory = 'none';
 
-    let categoryList = ['none', 'cat 1', 'cat 2', 'cat3']
-    let objectList = [
+    let categoryList = [
       {
         name: 'none',
-        color: 'gray'
+        color: 'gray',
+        total: 0
       },
       {
         name: 'cat1',
-        color: 'blue'
+        color: 'blue',
+        total: 0
       },
       {
         name: 'cat2',
-        color: 'orange'
+        color: 'orange',
+        total: 0
       },
       {
         name: 'cat3',
-        color: 'yellow'
+        color: 'yellow',
+        total: 0
       }
     ]
+    
 
     let values = [600];
     let currentInterval;
@@ -42,7 +46,13 @@ import RangeSlider from "svelte-range-slider-pips";
       currentInterval = setInterval(() => {
         values[0] = Math.max(Math.round((endTime.getTime() - Date.now()) / 1000), 0);
         if (values[0] === 0) {
-          history.push(nextPush)
+          for (let i in categoryList) {
+            if (categoryList[i].name === currentCategory){
+              categoryList[i].total += finishedDuration
+            }
+          }
+
+          history.unshift(nextPush)
           history = history;
           clearInterval(currentInterval);
 
@@ -74,7 +84,7 @@ import RangeSlider from "svelte-range-slider-pips";
   </style>
 
 
-      {#each objectList as category}
+      {#each categoryList as category}
         <button class="{currentCategory === category.name ? 'current-category' : ''}"
                 style="color: {currentCategory === category.name ? category.color: ''}"
                 on:click="{() => currentCategory = category.name}">{category.name}
@@ -89,7 +99,10 @@ import RangeSlider from "svelte-range-slider-pips";
 
   <RangeSlider bind:values min={0} max={60} float on:change={resetTimer} step={1}/>
 
-        <p>{history[0].duration} {history[1]}</p>
   {#each history as entry}
         <p>{entry.duration} in {entry.category}</p>
+  {/each}
+
+  {#each categoryList as category}
+        <p>{category.name} total time: {category.total}</p>
   {/each}

@@ -1,35 +1,7 @@
 <script>
 import RangeSlider from "svelte-range-slider-pips";
 
-    let values = [600];
-    let currentInterval;
-    let savedInterval;
-    let endTime;
 
-
-    function startTimer() {
-      endTime = new Date(Date.now() + values[0] * 1000);
-      currentInterval = setInterval(() => {
-        values[0] = Math.max(Math.round((endTime.getTime() - Date.now()) / 1000), 0);
-        if (values[0] === 0) {
-          clearInterval(currentInterval);
-          alert('complete')
-        }
-        console.log(currentInterval)
-        console.log(values[0])
-      }, 1000);
-    }
-  
-    function stopTimer() {
-      savedInterval = currentInterval;
-      console.log(savedInterval)
-      clearInterval(currentInterval);
-    }
-  
-    function resetTimer() {
-      stopTimer();
-      startTimer();
-    }
     // categories
     let currentCategory = 'none';
 
@@ -52,6 +24,45 @@ import RangeSlider from "svelte-range-slider-pips";
         color: 'yellow'
       }
     ]
+
+    let values = [600];
+    let currentInterval;
+    let savedInterval;
+    let endTime;
+    let finishedDuration;
+    let history = []
+
+    function startTimer() {
+      endTime = new Date(Date.now() + values[0] * 1000);
+      finishedDuration = values[0]
+      let nextPush = {
+        duration: finishedDuration,
+        category: currentCategory
+      }
+      currentInterval = setInterval(() => {
+        values[0] = Math.max(Math.round((endTime.getTime() - Date.now()) / 1000), 0);
+        if (values[0] === 0) {
+          history.push(nextPush)
+          history = history;
+          clearInterval(currentInterval);
+
+        }
+      }, 1000);
+    }
+  
+    function stopTimer() {
+      savedInterval = currentInterval;
+      console.log(savedInterval)
+      clearInterval(currentInterval);
+    }
+  
+    function resetTimer() {
+      stopTimer();
+      startTimer();
+    }
+
+    
+    
 
 
   </script>
@@ -76,4 +87,9 @@ import RangeSlider from "svelte-range-slider-pips";
     <button on:click={startTimer}>Resume</button>
 
 
-  <RangeSlider bind:values min={0} max={3600} float on:change={resetTimer} step={10}/>
+  <RangeSlider bind:values min={0} max={60} float on:change={resetTimer} step={1}/>
+
+        <p>{history[0].duration} {history[1]}</p>
+  {#each history as entry}
+        <p>{entry.duration} in {entry.category}</p>
+  {/each}

@@ -1,7 +1,7 @@
 <script>
 import RangeSlider from "svelte-range-slider-pips";
 
-    let values = [40];
+    let values = [600];
     let currentInterval;
     let savedInterval;
     let endTime;
@@ -13,6 +13,7 @@ import RangeSlider from "svelte-range-slider-pips";
         values[0] = Math.max(Math.round((endTime.getTime() - Date.now()) / 1000), 0);
         if (values[0] === 0) {
           clearInterval(currentInterval);
+          alert('complete')
         }
         console.log(currentInterval)
         console.log(values[0])
@@ -70,8 +71,9 @@ import RangeSlider from "svelte-range-slider-pips";
       {/each}
 
     <p>Time remaining: {values[0]} seconds</p>
+    <p>{Math.floor(values[0] / 60)}m {Math.floor(values[0] % 60)}s</p>
     <button on:click={stopTimer}>Pause</button>
     <button on:click={startTimer}>Resume</button>
 
 
-  <RangeSlider bind:values min={0} max={60} float on:change={resetTimer}/>
+  <RangeSlider bind:values min={0} max={3600} float on:change={resetTimer} step={10}/>

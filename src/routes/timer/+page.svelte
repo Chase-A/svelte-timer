@@ -2,14 +2,15 @@
 import RangeSlider from "svelte-range-slider-pips";
 import {history} from "../stores";
 
+const { AudioContext } = window;
+
+
+
     const today = new Date().toLocaleDateString()
-    console.log(today)
-    let note = new Audio('note.wav')
-    // categories
+    let note
+    
     let currentCategory = 'none';
 
-    // console.log(localStorage.getItem("categories"))
-    
     let categoryList = [
       {
         name: 'none',
@@ -17,12 +18,12 @@ import {history} from "../stores";
         total: 0
       },
       {
-        name: 'ocho',
+        name: 'work',
         color: 'blue',
         total: 0
       },
       {
-        name: 'work',
+        name: 'real work',
         color: 'orange',
         total: 0
       },
@@ -40,12 +41,26 @@ import {history} from "../stores";
     let savedInterval;
     let endTime;
     let finishedDuration;
-    // let history = {
-    //   '4/23/2023': {
-    //     'cat3': 20
-    //   }
-    // }
-    let displayedHistory = JSON.parse(localStorage.getItem("history"))
+    // thanks chatgpt
+    function orderObjectsByLatestDate(obj) {
+      const sortedKeys = Object.keys(obj).sort((a, b) => new Date(b) - new Date(a));
+      const sortedObj = {};
+      
+      for (const key of sortedKeys) {
+        sortedObj[key] = obj[key];
+      }
+      
+      return sortedObj;
+    }
+    function secondsToMinutesAndSeconds(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      const minutesString = String(minutes).padStart(2, '0');
+      const secondsString = String(remainingSeconds).padStart(2, '0');
+      return `${minutesString}:${secondsString}`;
+    }
+
+    let displayedHistory = orderObjectsByLatestDate(JSON.parse(localStorage.getItem("history")))
     function addToHistory(duration) {
       const today = new Date().toLocaleDateString()
       let nextHistory = JSON.parse(localStorage.getItem("history"))
@@ -64,26 +79,9 @@ import {history} from "../stores";
       }
       console.log(nextHistory)
       history.set(nextHistory)
-      displayedHistory = nextHistory
+      displayedHistory = orderObjectsByLatestDate(nextHistory)
+      note.play()
     }
-    // function addToHistory(duration) {
-    //   const today = new Date().toLocaleDateString()
-    //   console.log(duration, currentCategory)
-
-    //   if (history[today]) {
-    //     if (history[today][currentCategory] == undefined) {
-    //       history[today][currentCategory] = 0
-    //     }
-    //     history[today][currentCategory] += duration
-    //   }
-    //   else {
-    //     const nextEntry = {
-    //       [currentCategory]: duration
-    //     }
-    //     history[today] = nextEntry
-    //   }
-    //   console.log(history)
-    // }
 
     function startTimer() {
       endTime = new Date(Date.now() + values[0] * 1000);
@@ -109,9 +107,6 @@ import {history} from "../stores";
       }, 1000);
       
     }
-  
-    
-
 
     function stopTimer() {
       savedInterval = currentInterval;
@@ -123,10 +118,6 @@ import {history} from "../stores";
       stopTimer();
       startTimer();
     }
-
-    
-    
-
 
   </script>
   
@@ -145,20 +136,13 @@ import {history} from "../stores";
       {/each}
 
     <p>Time remaining: {values[0]} seconds</p>
-    <p>{Math.floor(values[0] / 60)}m {Math.floor(values[0] % 60)}s</p>
+    <p>{secondsToMinutesAndSeconds(values[0])}</p>
     <button on:click={stopTimer}>Pause</button>
     <button on:click={startTimer}>Resume</button>
 
 
-  <RangeSlider bind:values min={0} max={20} step={1} float on:change={resetTimer} />
+  <RangeSlider bind:values min={0} max={1800} step={1} on:change={resetTimer} />
 
-  <!-- {#each history as entry}
-        <p>{entry.duration} in {entry.category}</p>
-  {/each} -->
-
-  {#each categoryList as category}
-        <p>{category.name} total time: {category.total}</p>
-  {/each}
 
 
 <h1>History</h1>
@@ -168,8 +152,10 @@ import {history} from "../stores";
       {#each Object.entries(list) as [category, time]}
       <div>
         <h4>{category}</h4>
-        <p>{time}</p>
+        <p>{secondsToMinutesAndSeconds(time)}</p>
       </div>
       {/each}
     </div>
 {/each}
+
+<audio src="note.wav" bind:this={note}></audio>

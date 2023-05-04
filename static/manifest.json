@@ -2,5 +2,12 @@
     "id": "timer",
     "name": "Timer",
     "start_url": "/",
-    "display": "minimal"
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "svelte.png",
+            "sizes": "400x400",
+            "type": "image/png"
+        }
+    ]
 }

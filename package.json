@@ -14,5 +14,8 @@
 		"svelte-range-slider-pips": "^2.1.1",
 		"vite": "^4.2.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"svelte-fast-marquee": "^0.4.1"
+	}
 }

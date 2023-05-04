@@ -1,6 +1,2 @@
-<script>
-    import BasicTimer from "./BasicTimer.svelte";
-</script>
-
-<BasicTimer />
+<h1>home</h1>
   

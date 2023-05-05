@@ -29,7 +29,32 @@ const { AudioContext } = window;
         total: 0
       },
       {
+        name: 'literature',
+        color: 'salmon',
+        total: 0
+      },
+      {
+        name: 'literature review',
+        color: 'fuchsia',
+        total: 0
+      },
+      {
+        name: 'meditation',
+        color: 'goldenrod',
+        total: 0
+      },
+      {
         name: 'gaming',
+        color: 'salmon',
+        total: 0
+      },
+      {
+        name: 'dance',
+        color: 'salmon',
+        total: 0
+      },
+      {
+        name: 'renoise',
         color: 'orange',
         total: 0
       },
@@ -136,19 +161,28 @@ const { AudioContext } = window;
   </style>
 
 
-      {#each categoryList as category}
-        <button class="{currentCategory === category.name ? 'current-category' : ''}"
-                style="color: {currentCategory === category.name ? category.color: ''}"
-                on:click="{() => currentCategory = category.name}">{category.name}
-        </button>
-      {/each}
 
+<hr>
+<hr>
+<hr>    <hr>
+<hr>
+<hr>
     <p>Time remaining: {values[0]} seconds</p>
     <p>{secondsToMinutesAndSeconds(values[0])}</p>
     <button on:click={stopTimer}>Pause</button>
     <button on:click={startTimer}>Resume</button>
-
-
+    <hr>
+    <hr>
+    <hr>
+    {#each categoryList as category}
+    <button class="{currentCategory === category.name ? 'current-category' : ''}"
+            style="color: {currentCategory === category.name ? category.color: ''}"
+            on:click="{() => currentCategory = category.name}">{category.name}
+    </button>
+  {/each}
+    <hr>
+    <hr>
+    <hr>
   <RangeSlider bind:values min={0} max={1800} step={1} on:change={resetTimer} />
 
 

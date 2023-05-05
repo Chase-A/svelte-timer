@@ -7,7 +7,8 @@ const { AudioContext } = window;
 
 
     const today = new Date().toLocaleDateString()
-    let note
+    let note;
+    
     
     let currentCategory = 'none';
 
@@ -23,12 +24,17 @@ const { AudioContext } = window;
         total: 0
       },
       {
-        name: 'real work',
+        name: 'side proj',
         color: 'orange',
         total: 0
       },
       {
-        name: 'cat3',
+        name: 'gaming',
+        color: 'orange',
+        total: 0
+      },
+      {
+        name: 'guitar',
         color: 'yellow',
         total: 0
       }
@@ -119,6 +125,8 @@ const { AudioContext } = window;
       startTimer();
     }
 
+
+    // clear local storage button
   </script>
   
   <style>
@@ -158,4 +166,6 @@ const { AudioContext } = window;
     </div>
 {/each}
 
+<!-- change volume -->
 <audio src="note.wav" bind:this={note}></audio>
+<button on:click={() => localStorage.clear()}>clear history</button>

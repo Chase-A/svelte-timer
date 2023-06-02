@@ -29,6 +29,11 @@ const { AudioContext } = window;
         total: 0
       },
       {
+        name: 'reflection',
+        color: 'pink',
+        total: 0
+      },
+      {
         name: 'organize',
         color: 'orange',
         total: 0

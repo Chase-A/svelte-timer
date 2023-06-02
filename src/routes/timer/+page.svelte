@@ -77,7 +77,7 @@ const { AudioContext } = window;
     // localStorage: https://www.reddit.com/r/sveltejs/comments/p438og/how_to_access_localstorage_via_store_in_sveltekit/
     // https://www.youtube.com/watch?v=jOOrWeYfmlQ
 
-    let values = [5];
+    let values = [600];
     let currentInterval;
     let savedInterval;
     let endTime;

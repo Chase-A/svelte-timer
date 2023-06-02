@@ -194,7 +194,7 @@ const { AudioContext } = window;
     <hr>
     <hr>
     <hr>
-  <RangeSlider bind:values min={0} max={1800} step={10} on:change={resetTimer} />
+  <RangeSlider bind:values min={0} max={1800} step={1} on:change={resetTimer} />
 
 
 

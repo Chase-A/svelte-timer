@@ -1,7 +1,7 @@
 <script>
 import RangeSlider from "svelte-range-slider-pips";
 import {history} from "../stores";
-
+import RoundRange from "./RoundRange.svelte";
 const { AudioContext } = window;
 
 
@@ -25,6 +25,11 @@ const { AudioContext } = window;
       },
       {
         name: 'side proj',
+        color: 'red',
+        total: 0
+      },
+      {
+        name: 'organize',
         color: 'orange',
         total: 0
       },
@@ -161,10 +166,11 @@ const { AudioContext } = window;
   </style>
 
 
-
+<RoundRange />
 <hr>
 <hr>
-<hr>    <hr>
+<hr>    
+<hr>
 <hr>
 <hr>
     <p>Time remaining: {values[0]} seconds</p>
